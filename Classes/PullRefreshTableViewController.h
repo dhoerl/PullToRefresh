@@ -27,33 +27,37 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
+#if 0 // If not using BaseViewController as superclass
+typedef void(^showBlock)();
+#endif
 
-@interface PullRefreshTableViewController : UITableViewController {
-    UIView *refreshHeaderView;
-    UILabel *refreshLabel;
-    UIImageView *refreshArrow;
-    UIActivityIndicatorView *refreshSpinner;
-    BOOL isDragging;
-    BOOL isLoading;
-    NSString *textPull;
-    NSString *textRelease;
-    NSString *textLoading;
-}
-
-@property (nonatomic, retain) UIView *refreshHeaderView;
-@property (nonatomic, retain) UILabel *refreshLabel;
-@property (nonatomic, retain) UIImageView *refreshArrow;
-@property (nonatomic, retain) UIActivityIndicatorView *refreshSpinner;
+@interface PullRefreshTableViewController : BaseViewController // UI Table View Controller
+@property (nonatomic, strong) UIView *refreshHeaderView;
+@property (nonatomic, strong) UILabel *refreshLabel;
+@property (nonatomic, strong) UIImageView *refreshArrow;
+@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
 @property (nonatomic, copy) NSString *textPull;
 @property (nonatomic, copy) NSString *textRelease;
 @property (nonatomic, copy) NSString *textLoading;
+@property (nonatomic, assign) BOOL isPullToRefreshing;
+@property (nonatomic, assign) BOOL usingPullToRefreshCell;
 
-- (void)setupStrings;
-- (void)addPullToRefreshHeader;
-- (void)startLoading;
-- (void)stopLoading;
-- (void)refresh;
+- (void)refreshStart;		// User overrides this - message telling saying time to refresh table
+- (void)refreshDone;		// User must call this when refresh is done
+
+@end
+
+@interface PullRefreshTableViewController (TableViewHelper)
+
+- (UITableViewCell *)hiddenPullToRefreshCell;
+- (showBlock)showPullToRefreshCell;
+- (showBlock)hidePullToRefreshCell;
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

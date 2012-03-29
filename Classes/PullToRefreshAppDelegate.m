@@ -19,9 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-	self.window = [[[UIWindow alloc] initWithFrame: screenBounds] autorelease];
+	self.window = [[UIWindow alloc] initWithFrame: screenBounds];
 
-    DemoTableViewController *demoTableViewController = [[[DemoTableViewController alloc] init] autorelease];
+    DemoTableViewController *demoTableViewController = [[DemoTableViewController alloc] init];
     navigationController = [[UINavigationController alloc] initWithRootViewController:demoTableViewController];
 
     [window addSubview:navigationController.view];
@@ -29,13 +29,6 @@
 
     return YES;
 }
-
-- (void)dealloc {
-	[navigationController release];
-	[window release];
-	[super dealloc];
-}
-
 
 @end
 
