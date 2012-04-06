@@ -54,6 +54,7 @@ typedef void(^showBlock)();
 - (UITableViewCell *)hiddenPullToRefreshCell;
 - (showBlock)showPullToRefreshCell;
 - (showBlock)hidePullToRefreshCell;
+- (void)showPullToRefreshCellNow;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;

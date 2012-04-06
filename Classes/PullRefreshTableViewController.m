@@ -232,11 +232,17 @@
 		
 		label.frame = [BaseViewController centeredFrameForSize:label.frame.size inRect:frame];
 		[cell.contentView addSubview:label];
-	}
-	cell.contentView.alpha		= 0;
-	cell.backgroundView.alpha	= 0;
 
+		cell.contentView.alpha		= 0;
+		cell.backgroundView.alpha	= 0;
+	}
 	return cell;
+}
+
+- (void)showPullToRefreshCellNow
+{
+	cell.contentView.alpha		= 1;
+	cell.backgroundView.alpha	= 1;
 }
 
 - (showBlock)showPullToRefreshCell
@@ -282,7 +288,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+{	
 	return [self hiddenPullToRefreshCell];
 }
 
