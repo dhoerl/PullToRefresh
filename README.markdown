@@ -1,5 +1,9 @@
 PullToRefresh
 
+DHOERL CHANGES:
+- ARCified
+- more callbacks
+
 A simple iPhone TableViewController for adding pull-to-refresh functionality.
 
 ![](http://s3.amazonaws.com/leah.baconfile.com/blog/refresh-small-1.png)
