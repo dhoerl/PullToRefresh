@@ -31,6 +31,8 @@
 
 #import "PullRefreshTableViewController.h"
 
+#import "UIColor+Hex.h"
+
 #define REFRESH_HEADER_HEIGHT 60.0f
 
 @interface PullRefreshTableViewController ()
@@ -94,25 +96,26 @@
     refreshHeaderView.backgroundColor = [UIColor clearColor];
 
 	{
-		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 4, 320, REFRESH_HEADER_HEIGHT - 8)];
-		bv.backgroundColor = [UIColor whiteColor];
+		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 0+0, 320, REFRESH_HEADER_HEIGHT - 0)];	// was 4 and 8
+		bv.backgroundColor = [UIColor colorWithHex:0x111111];
 		CALayer *layer = bv.layer;
-		layer.cornerRadius = 12;
+		//layer.cornerRadius = 12;
 		layer.masksToBounds = YES;
 		[refreshHeaderView addSubview:bv];
 	}
 
-    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, REFRESH_HEADER_HEIGHT)];
+    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 0, 320-50, REFRESH_HEADER_HEIGHT)];
 	refreshLabel.backgroundColor = [UIColor clearColor];
-    refreshLabel.font = [UIFont boldSystemFontOfSize:12.0];
+	refreshLabel.textColor = [UIColor colorWithHex:0xeeeeee];
+    refreshLabel.font = [UIFont fontWithName:@"Arvo" size:12.0f];
     refreshLabel.textAlignment = UITextAlignmentCenter;
 
-    refreshArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow.png"]];
-    refreshArrow.frame = CGRectMake(floorf((REFRESH_HEADER_HEIGHT - 27) / 2),
-                                    (floorf(REFRESH_HEADER_HEIGHT - 44) / 2),
-                                    27, 44);
+    refreshArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iphone_refresh.png"]];
+    refreshArrow.frame = CGRectMake(floorf((88 - 27) / 2),
+                                    (floorf(REFRESH_HEADER_HEIGHT - 45) / 2),
+                                    27, 45);
 
-    refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     refreshSpinner.frame = CGRectMake(floorf(floorf(REFRESH_HEADER_HEIGHT - 20) / 2), floorf((REFRESH_HEADER_HEIGHT - 20) / 2), 20, 20);
     refreshSpinner.hidesWhenStopped = YES;
 
@@ -206,7 +209,6 @@
     // Don't forget to call stopLoading at the end.
     [self stopLoading];
 }
-
 
 @end
 
