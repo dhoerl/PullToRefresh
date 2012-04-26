@@ -34,27 +34,20 @@ typedef void(^showBlock)();
 #endif
 
 @interface PullRefreshTableViewController : BaseViewController // UI Table View Controller
-@property (nonatomic, strong) UIView *refreshHeaderView;
-@property (nonatomic, strong) UILabel *refreshLabel;
-@property (nonatomic, strong) UIImageView *refreshArrow;
-@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
-@property (nonatomic, copy) NSString *textPull;
-@property (nonatomic, copy) NSString *textRelease;
-@property (nonatomic, copy) NSString *textLoading;
-@property (nonatomic, assign) BOOL isPullToRefreshing;
 @property (nonatomic, assign) BOOL usingPullToRefreshCell;
+@property (nonatomic, assign) BOOL isPullToRefreshing;
 
 - (void)refreshStart;		// User overrides this - message telling saying time to refresh table
 - (void)refreshDone;		// User must call this when refresh is done
-
-@end
-
-@interface PullRefreshTableViewController (TableViewHelper)
 
 - (UITableViewCell *)hiddenPullToRefreshCell;
 - (showBlock)showPullToRefreshCell;
 - (showBlock)hidePullToRefreshCell;
 - (void)showPullToRefreshCellNow;
+
+@end
+
+@interface PullRefreshTableViewController (TableViewHelper)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
