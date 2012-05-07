@@ -50,7 +50,7 @@ static unsigned long getMStime(void)
 @property (nonatomic, strong) UIView *refreshHeaderView;
 @property (nonatomic, strong) UILabel *refreshLabel;
 @property (nonatomic, strong) UIImageView *refreshArrow;
-//@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
+@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
 @property (nonatomic, copy) NSString *textPull;
 @property (nonatomic, copy) NSString *textRelease;
 @property (nonatomic, copy) NSString *textLoading;
@@ -77,7 +77,7 @@ static unsigned long getMStime(void)
 @synthesize refreshLabel;
 @synthesize refreshArrow;
 @synthesize isPullToRefreshing;
-// @synthesize refreshSpinner
+@synthesize refreshSpinner;
 @synthesize usingPullToRefreshCell;
 
 #if 0	// Lot18 is not using this
@@ -147,9 +147,9 @@ static unsigned long getMStime(void)
     refreshArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iphone_refresh.png"]];
     refreshArrow.frame = CGRectMake(floorf((88 - 27) / 2), (floorf(REFRESH_HEADER_HEIGHT - 45) / 2), 27, 45);
 
-#if 0
+#if 1
     refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    refreshSpinner.frame = CGRectMake(floorf(floorf(REFRESH_HEADER_HEIGHT - 20) / 2), floorf((REFRESH_HEADER_HEIGHT - 20) / 2), 20, 20);
+    refreshSpinner.frame = CGRectMake(floorf((88 - 20) / 2), floorf((REFRESH_HEADER_HEIGHT - 20) / 2), 20, 20);
     refreshSpinner.hidesWhenStopped = YES;
     [refreshHeaderView addSubview:refreshSpinner];
 #endif
@@ -215,7 +215,7 @@ static unsigned long getMStime(void)
     TABLE_VIEW(self.view).contentInset = UIEdgeInsetsMake(REFRESH_HEADER_HEIGHT, 0, 0, 0);
     refreshLabel.text = self.textLoading;
     refreshArrow.hidden = YES;
-//    [refreshSpinner startAnimating];
+    [refreshSpinner startAnimating];
     [UIView commitAnimations];
 
     // Refresh action!
@@ -243,7 +243,7 @@ static unsigned long getMStime(void)
     // Reset the header
     refreshLabel.text = self.textPull;
     refreshArrow.hidden = NO;
-//    [refreshSpinner stopAnimating];
+    [refreshSpinner stopAnimating];
 }
 
 - (void)refreshStart
