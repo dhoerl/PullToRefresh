@@ -35,7 +35,7 @@
 #import "UIColor+Hex.h"
 
 #define REFRESH_HEADER_HEIGHT	60.0f
-#define HOLD_DELAY				600 // milliseconds
+#define HOLD_DELAY				400 // 0.4f sec
 #define LABEL_MARGIN			100
 
 static unsigned long getMStime(void)
