@@ -66,7 +66,7 @@ static unsigned long getMStime(void)
 
 @implementation PullRefreshTableViewController
 {
-	UITableViewCell *cell;	// save the last one so we can animate it if needbe
+	UITableViewCell *cell;	// save the last one so we can animate it if need be
 	unsigned long pulledDownTimeStamp;
 	BOOL isDragging;
 }
@@ -121,6 +121,7 @@ static unsigned long getMStime(void)
   [super viewDidLoad];
 
   [self addPullToRefreshHeader];
+  [self hiddenPullToRefreshCell];
 }
 
 
@@ -261,14 +262,22 @@ static unsigned long getMStime(void)
 
 - (void)showPullToRefreshCellNow
 {
+	
 	cell.contentView.alpha		= 1;
 	cell.backgroundView.alpha	= 1;
+
+	[TABLE_VIEW(self.view) reloadData];	// possibly creates the cell
 }
 
 - (showBlock)showPullToRefreshCell
 {
 	showBlock b = ^
 					{
+						cell.contentView.alpha		= 0;
+						cell.backgroundView.alpha	= 0;
+
+						[TABLE_VIEW(self.view) reloadData];
+
 						[UIView animateWithDuration:0.25f animations:^
 							{
 								cell.contentView.alpha		= 1;
@@ -311,8 +320,8 @@ static unsigned long getMStime(void)
 		label.frame = [BaseViewController centeredFrameForSize:label.frame.size inRect:frame];
 		[cell.contentView addSubview:label];
 
-		cell.contentView.alpha		= 0;
-		cell.backgroundView.alpha	= 0;
+		cell.contentView.alpha		= 1;
+		cell.backgroundView.alpha	= 1;
 	}
 	return cell;
 }
