@@ -127,11 +127,11 @@ static unsigned long getMStime(void)
 
 - (void)addPullToRefreshHeader
 {
-    refreshHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 - REFRESH_HEADER_HEIGHT, 320, REFRESH_HEADER_HEIGHT)];
+    refreshHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 - REFRESH_HEADER_HEIGHT, SCREEN_WIDTH, REFRESH_HEADER_HEIGHT)];
     refreshHeaderView.backgroundColor = [UIColor clearColor];
 
 	{
-		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 0+0, 320, REFRESH_HEADER_HEIGHT - 0)];	// was 4 and 8
+		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 0+0, SCREEN_WIDTH, REFRESH_HEADER_HEIGHT - 0)];	// was 4 and 8
 		bv.backgroundColor = [UIColor colorWithHex:0x111111];
 		CALayer *layer = bv.layer;
 		//layer.cornerRadius = 12;
@@ -139,7 +139,7 @@ static unsigned long getMStime(void)
 		[refreshHeaderView addSubview:bv];
 	}
 
-    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(LABEL_MARGIN, 0, 320-LABEL_MARGIN, REFRESH_HEADER_HEIGHT)];
+    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(LABEL_MARGIN, 0, SCREEN_WIDTH-LABEL_MARGIN, REFRESH_HEADER_HEIGHT)];
 	refreshLabel.backgroundColor = [UIColor clearColor];
 	refreshLabel.textColor = [UIColor colorWithHex:0xeeeeee];
     refreshLabel.font = [UIFont fontWithName:@"Arvo" size:14.0f];
