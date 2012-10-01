@@ -36,6 +36,8 @@ typedef void(^showBlock)();
 @interface PullRefreshTableViewController : BaseViewController // UI Table View Controller
 @property (nonatomic, assign) BOOL usingPullToRefreshCell;
 @property (nonatomic, assign) BOOL isPullToRefreshing;
+@property (nonatomic, assign) CGFloat width;		// Width of View spinner is contained in
+
 
 - (void)refreshStart;		// User overrides this - message telling saying time to refresh table
 - (void)refreshDone;		// User must call this when refresh is done

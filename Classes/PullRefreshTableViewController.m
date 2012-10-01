@@ -36,7 +36,7 @@
 
 #define REFRESH_HEADER_HEIGHT	60.0f
 #define HOLD_DELAY				400 // 0.4f sec
-#define LABEL_MARGIN			100
+#define LABEL_MARGIN			(width+12)
 
 static unsigned long getMStime(void)
 {
@@ -79,6 +79,7 @@ static unsigned long getMStime(void)
 @synthesize isPullToRefreshing;
 @synthesize refreshSpinner;
 @synthesize usingPullToRefreshCell;
+@synthesize width;
 
 #if 0	// Lot18 is not using this
 - (id)initWithStyle:(UITableViewStyle)style
@@ -114,6 +115,7 @@ static unsigned long getMStime(void)
   textPull		= @"Pull down to refresh…";
   textRelease	= @"Release to refresh…";
   textLoading	= @"Loading…";
+  width			= 91; // need something
 }
 
 - (void)viewDidLoad
@@ -146,14 +148,13 @@ static unsigned long getMStime(void)
     refreshLabel.textAlignment = UITextAlignmentLeft;
 
     refreshArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iphone_refresh.png"]];
-    refreshArrow.frame = CGRectMake(floorf((88 - 27) / 2), (floorf(REFRESH_HEADER_HEIGHT - 45) / 2), 27, 45);
+    refreshArrow.frame = CGRectMake(floorf((width - 27) / 2), (floorf(REFRESH_HEADER_HEIGHT - 45) / 2), 27, 45);
 
-#if 1
     refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    refreshSpinner.frame = CGRectMake(floorf((88 - 20) / 2), floorf((REFRESH_HEADER_HEIGHT - 20) / 2), 20, 20);
+    refreshSpinner.frame = CGRectMake(floorf((width - 20) / 2), floorf((REFRESH_HEADER_HEIGHT - 20) / 2), 20, 20);
     refreshSpinner.hidesWhenStopped = YES;
     [refreshHeaderView addSubview:refreshSpinner];
-#endif
+
     [refreshHeaderView addSubview:refreshLabel];
     [refreshHeaderView addSubview:refreshArrow];
     [TABLE_VIEW(self.view) addSubview:refreshHeaderView];
