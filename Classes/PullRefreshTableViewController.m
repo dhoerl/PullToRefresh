@@ -47,6 +47,7 @@ static unsigned long getMStime(void)
 
 
 @interface PullRefreshTableViewController ()
+@property (nonatomic, assign, readwrite) BOOL usingPullToRefreshCell;
 @property (nonatomic, strong) UIView *refreshHeaderView;
 @property (nonatomic, strong) UILabel *refreshLabel;
 @property (nonatomic, strong) UIImageView *refreshArrow;
@@ -263,27 +264,49 @@ static unsigned long getMStime(void)
 
 - (void)showPullToRefreshCellNow
 {
-	
-	cell.contentView.alpha		= 1;
-	cell.backgroundView.alpha	= 1;
+	[self hiddenPullToRefreshCell];
 
-	[TABLE_VIEW(self.view) reloadData];	// possibly creates the cell
+	if(!usingPullToRefreshCell) {
+		usingPullToRefreshCell		= YES;
+		cell.contentView.alpha		= 1;
+		cell.backgroundView.alpha	= 1;
+
+		[TABLE_VIEW(self.view) reloadData];	// possibly creates the cell
+	}
+}
+
+- (void)hidePullToRefreshCellNow
+{
+	if(usingPullToRefreshCell) {
+		usingPullToRefreshCell		= NO;
+		cell.contentView.alpha		= 0;
+		cell.backgroundView.alpha	= 0;
+
+		[TABLE_VIEW(self.view) reloadData];	// possibly creates the cell
+	}
 }
 
 - (showBlock)showPullToRefreshCell
 {
+	[self hiddenPullToRefreshCell];
+
 	showBlock b = ^
 					{
-						cell.contentView.alpha		= 0;
-						cell.backgroundView.alpha	= 0;
+						if(!usingPullToRefreshCell) {
+							usingPullToRefreshCell		= YES;
 
-						[TABLE_VIEW(self.view) reloadData];
+							cell.contentView.alpha		= 0;
+							cell.backgroundView.alpha	= 0;
+							assert(cell);
+							
+							[TABLE_VIEW(self.view) reloadData];
 
-						[UIView animateWithDuration:0.25f animations:^
-							{
-								cell.contentView.alpha		= 1;
-								cell.backgroundView.alpha	= 1;
-							} ];
+							[UIView animateWithDuration:0.25f animations:^
+								{
+									cell.contentView.alpha		= 1;
+									cell.backgroundView.alpha	= 1;
+								} ];
+						}
 					};
 	return [b copy];
 }
@@ -291,11 +314,15 @@ static unsigned long getMStime(void)
 {
 	showBlock b = ^
 					{
-						[UIView animateWithDuration:0.25f animations:^
-							{
-								cell.contentView.alpha		= 0;
-								cell.backgroundView.alpha	= 0;
-							} ];
+						if(usingPullToRefreshCell) {
+							usingPullToRefreshCell = NO;
+							[UIView animateWithDuration:0.25f animations:^
+								{
+									assert(cell);
+									cell.contentView.alpha		= 0;
+									cell.backgroundView.alpha	= 0;
+								} ];
+						}
 					};
 	return [b copy];
 }
