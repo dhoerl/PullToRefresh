@@ -45,6 +45,11 @@ static unsigned long getMStime(void)
 	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
+#define TABLE_VIEW(x)		((UITableView *)(x))
+#define SCREEN_WIDTH_PHONE	320.f
+#define SCREEN_HEIGHT_PHONE	480.f
+#define SCREEN_WIDTH_PAD	768.f
+#define SCREEN_HEIGHT_PAD	1024.f
 
 @interface PullRefreshTableViewController ()
 @property (nonatomic, assign, readwrite) BOOL usingPullToRefreshCell;
@@ -56,13 +61,6 @@ static unsigned long getMStime(void)
 @property (nonatomic, copy) NSString *textRelease;
 @property (nonatomic, copy) NSString *textLoading;
 
-- (void)setupStrings;
-- (void)addPullToRefreshHeader;
-- (void)startLoading;
-- (void)stopLoading;
-
-- (void)stopLoadingComplete:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-
 @end
 
 @implementation PullRefreshTableViewController
@@ -70,6 +68,7 @@ static unsigned long getMStime(void)
 	UITableViewCell *cell;	// save the last one so we can animate it if need be
 	unsigned long pulledDownTimeStamp;
 	BOOL isDragging;
+	CGFloat defaultWidth;
 }
 @synthesize textPull;
 @synthesize textRelease;
@@ -87,7 +86,7 @@ static unsigned long getMStime(void)
 {
   self = [super initWithStyle:style];
   if (self != nil) {
-    [self setupStrings];
+    [self setup];
   }
   return self;
 }
@@ -97,7 +96,7 @@ static unsigned long getMStime(void)
 {
   self = [super initWithCoder:aDecoder];
   if (self != nil) {
-    [self setupStrings];
+    [self setup];
   }
   return self;
 }
@@ -106,23 +105,24 @@ static unsigned long getMStime(void)
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self != nil) {
-    [self setupStrings];
+    [self setup];
   }
   return self;
 }
 
-- (void)setupStrings
+- (void)setup
 {
-  textPull		= @"Pull down to refresh…";
-  textRelease	= @"Release to refresh…";
-  textLoading	= @"Loading…";
-  width			= 91; // need something
+	textPull	= @"Pull down to refresh…";
+	textRelease	= @"Release to refresh…";
+	textLoading	= @"Loading…";
+
+	defaultWidth = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? SCREEN_WIDTH_PAD : SCREEN_WIDTH_PHONE;
+	width = 91; // need something
 }
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-
   [self addPullToRefreshHeader];
   [self hiddenPullToRefreshCell];
 }
@@ -130,11 +130,11 @@ static unsigned long getMStime(void)
 
 - (void)addPullToRefreshHeader
 {
-    refreshHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 - REFRESH_HEADER_HEIGHT, SCREEN_WIDTH, REFRESH_HEADER_HEIGHT)];
+    refreshHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 - REFRESH_HEADER_HEIGHT, defaultWidth, REFRESH_HEADER_HEIGHT)];
     refreshHeaderView.backgroundColor = [UIColor clearColor];
 
 	{
-		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 0+0, SCREEN_WIDTH, REFRESH_HEADER_HEIGHT - 0)];	// was 4 and 8
+		UIView *bv = [[UIView alloc] initWithFrame:CGRectMake(0, 0+0, defaultWidth, REFRESH_HEADER_HEIGHT - 0)];	// was 4 and 8
 		bv.backgroundColor = [UIColor colorWithHex:0x111111];
 		CALayer *layer = bv.layer;
 		//layer.cornerRadius = 12;
@@ -142,7 +142,7 @@ static unsigned long getMStime(void)
 		[refreshHeaderView addSubview:bv];
 	}
 
-    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(LABEL_MARGIN, 0, SCREEN_WIDTH-LABEL_MARGIN, REFRESH_HEADER_HEIGHT)];
+    refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(LABEL_MARGIN, 0, defaultWidth-LABEL_MARGIN, REFRESH_HEADER_HEIGHT)];
 	refreshLabel.backgroundColor = [UIColor clearColor];
 	refreshLabel.textColor = [UIColor colorWithHex:0xeeeeee];
     refreshLabel.font = [UIFont fontWithName:@"Arvo" size:14.0f];
@@ -331,7 +331,7 @@ static unsigned long getMStime(void)
 {
 	if(!cell) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-		CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH, kPullToFreshHeight);
+		CGRect frame = CGRectMake(0, 0, defaultWidth, kPullToFreshHeight);
 		
 		UIView *backgroundView = [[UIView alloc] initWithFrame:frame];
 		backgroundView.backgroundColor = [UIColor darkGrayColor];
